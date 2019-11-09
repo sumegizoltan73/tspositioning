@@ -1,0 +1,908 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+
+    <!--NEED TO RUN WITHOUT LINE BELOW-->
+    <!--NEED TO RUN WITHOUT LINE above-->
+
+    <style type="text/css">
+        .root {
+            position: relative;
+            top: 100px;
+            left: 100px;
+        }
+        #parent {
+            width: 60%;
+            height: 40px;
+            margin: 10px auto;
+            padding: 5px;
+            border: 1px solid #777;
+            background-color: #fbca93;
+            text-align: center;
+        }
+        .positionable {
+            position: absolute;
+            display: block;
+            right: 0;
+            bottom: 0;
+            background-color: #bcd5e6;
+            text-align: center;
+        }
+        #positionable1 {
+            width: 75px;
+            height: 75px;
+        }
+        #positionable2 {
+            width: 120px;
+            height: 40px;
+        }
+        select, input {
+            margin-left: 15px;
+        }
+    </style>
+    
+    <script type="text/javascript">
+        /*!  typescript.bgiframe https://github.com/sumegizoltan/BgiFrame
+         *      based on
+         *   https://github.com/brandonaaron/bgiframe
+         *   The jQuery plugin copyrights: Copyright (c) 2013 Brandon Aaron (http://brandonaaron.net)
+         */
+        var BgiFrame; (function (n) { var t = function () { function n() { } return n }(), i = function () { function n(n) { this.s = null, this.s = new t, this.s.top = "auto", this.s.left = "auto", this.s.width = "auto", this.s.height = "auto", this.s.opacity = !0, this.s.src = "javascript:false;", this.s.conditional = /MSIE 6.0/.test(navigator.userAgent), n && this.s.conditional && this.fire(n) } return n.prototype.createIframe = function () { var n = document.createElement("iframe"); return n.className = "bgiframe", n.setAttribute("frameborder", "0"), n.setAttribute("tabindex", "-1"), n.setAttribute("src", this.s.src), n.style.display = "block", n.style.position = "absolute", n.style.zIndex = "-1", n }, n.prototype.fire = function (n) { if (this.s.conditional) { var i = this.getIframe(n), t = i; i || (t = this.createIframe()), t.style.top = this.s.top == "auto" ? (parseInt(n.style.borderTopWidth, 10) || 0) * -1 + "px" : this.prop(this.s.top), t.style.left = this.s.left == "auto" ? (parseInt(n.style.borderLeftWidth, 10) || 0) * -1 + "px" : this.prop(this.s.left), t.style.width = this.s.width == "auto" ? n.offsetWidth + "px" : this.prop(this.s.width), t.style.height = this.s.height == "auto" ? n.offsetHeight + "px" : this.prop(this.s.height), t.style.opacity = this.s.opacity === !0 ? "0" : undefined, i || n.insertBefore(t) } }, n.prototype.getIframe = function (n) { for (var i = n.getElementsByTagName("iframe"), r = null, t = 0; t < i.length; t++) if (/bgiframe/.test(i[t].className)) { r = i[t]; break } return r }, n.prototype.prop = function (n) { return n && n.constructor === Number ? n + "px" : n }, n }(); n.Bgiframe = i })(BgiFrame || (BgiFrame = {}))
+
+        // position.common.js
+		/*!   https://bitbucket.org/zoli73/tspositioning
+		 *    based on   http://api.jquery.com/position
+		 *               jquery.position() plugin
+		 */
+        var position;
+        (function (position) {
+            // PluginBase
+            var PluginBase = (function () {
+                function PluginBase(targetSelector, targetElement, options) {
+                    this.options = null;
+                    this.target = null;
+                    this.setTarget(targetSelector, targetElement);
+                }
+                PluginBase.prototype.initialize = function () {
+                };
+                PluginBase.prototype.parseIntFromString = function (value) {
+                    return parseInt(value, 10) || 0;
+                };
+                PluginBase.prototype.getObjectProp = function (obj, propName) {
+                    var prop = null;
+                    if (obj) {
+                        if (propName in obj) {
+                            prop = obj[propName];
+                        } else if ('prototype' in obj) {
+                            if (propName in obj.prototype) {
+                                prop = obj.prototype[propName];
+                            }
+                        }
+                    }
+                    return prop;
+                };
+                PluginBase.prototype.getObjectFn = function (obj, fnName) {
+                    var fn = PluginBase.prototype.getObjectProp(obj, fnName);
+                    return (typeof fn == 'function') ? fn : null;
+                };
+                PluginBase.prototype.isPropertyInObject = function (obj, propertyName) {
+                    var isInProto = false;
+                    if (obj) {
+                        isInProto = (propertyName in obj);
+                        if (!isInProto && ('prototype' in obj)) {
+                            isInProto = (propertyName in obj.prototype);
+                        }
+                    }
+                    return isInProto;
+                };
+                PluginBase.prototype.isPropertyInElement = function (elem, propertyName) {
+                    var isInProto = PluginBase.prototype.isPropertyInObject(elem, propertyName);
+                    if (!isInProto && elem) {
+                        if ((elem == document)) {
+                            if ('Document' in window) {
+                                isInProto = PluginBase.prototype.isPropertyInObject(window['Document'], propertyName);
+                            } else if ('HTMLDocument' in window) {
+                                isInProto = PluginBase.prototype.isPropertyInObject(window['HTMLDocument'], propertyName);
+                            }
+                        } else {
+                            if ('HTMLElement' in window) {
+                                isInProto = PluginBase.prototype.isPropertyInObject(window['HTMLElement'], propertyName);
+                            } else if ('HTMLHtmlElement' in window) {
+                                isInProto = PluginBase.prototype.isPropertyInObject(window['HTMLHtmlElement'], propertyName);
+                            } else if ('Node' in window) {
+                                isInProto = PluginBase.prototype.isPropertyInObject(window['Node'], propertyName);
+                            }
+                        }
+                    }
+                    return isInProto;
+                };
+                PluginBase.prototype.getElementsByClassName = function (classNames) {
+                    if (!classNames) {
+                        return null;
+                    }
+                    var results = [];
+                    var i = 0;
+                    var el;
+                    var rx = new RegExp(classNames.replace(" ", "|"));
+                    if (PluginBase.prototype.isPropertyInElement(document, 'all')) {
+                        for (var n = 0; n < document.all.length; n++) {
+                            if ("className" in document.all[n]) {
+                                el = document.all[n];
+                                if (rx.test(el.className)) {
+                                    results.push(el);
+                                    i++;
+                                }
+                            }
+                        }
+                    } else {
+                        //TODO recursive children
+                    }
+                    return results;
+                };
+                PluginBase.prototype.getElements = function (targetSelector, node) {
+                    var target = [];
+                    var selectors = targetSelector.split(',');
+                    var i = selectors.length;
+                    var el;
+                    var nodelist;
+                    var id;
+                    var classname;
+                    var tagname;
+                    var parentnode;
+                    if (node) {
+                        parentnode = node;
+                    } else {
+                        parentnode = document;
+                    }
+                    while (i--) {
+                        // process all selector which separated by ','
+                        if (/[#]/.test(selectors[i])) {
+                            // id
+                            id = selectors[i].split('#')[1];
+                            el = document.getElementById(id);
+                            if (el) {
+                                target.push(el);
+                            }
+                        } else if (/[\.]/.test(selectors[i])) {
+                            // className
+                            classname = selectors[i].split('.')[1];
+                            tagname = selectors[i].split('.')[0].toUpperCase();
+                            if (PluginBase.prototype.isPropertyInElement(parentnode, 'getElementsByClassName')) {
+                                nodelist = parentnode.getElementsByClassName(classname);
+                            } else {
+                                nodelist = this.getElementsByClassName(classname);
+                            }
+                            if (nodelist) {
+                                for (var j = 0; j < nodelist.length; j++) {
+                                    if (tagname) {
+                                        if (tagname == (nodelist[j]).tagName.toUpperCase()) {
+                                            target.push(nodelist[j]);
+                                        }
+                                    } else {
+                                        target.push(nodelist[j]);
+                                    }
+                                }
+                            }
+                        } else {
+                            // tagName
+                            nodelist = parentnode.getElementsByTagName(selectors[i]);
+                            if (nodelist) {
+                                for (var j = 0; j < nodelist.length; j++) {
+                                    target.push(nodelist[j]);
+                                }
+                            }
+                        }
+                    }
+                    if (target.length < 1) {
+                        target = null;
+                    }
+                    return target;
+                };
+                PluginBase.prototype.setTarget = function (targetSelector, targetElement) {
+                    if (!targetSelector && !targetElement) {
+                        return;
+                    }
+                    if (targetElement) {
+                        this.target = [];
+                        this.target.push(targetElement);
+                    } else {
+                        this.target = this.getElements(targetSelector);
+                    }
+                };
+                PluginBase.prototype.setOptions = function (options) {
+                    if (options) {
+                        if (!this.options) {
+                            this.options = {
+                            };
+                        }
+                        for (var i in options) {
+                            this.options[i] = options[i];
+                        }
+                    }
+                };
+                return PluginBase;
+            })();
+            position.PluginBase = PluginBase;
+        })(position || (position = {}));
+        (function (position) {
+            position.getElements = position.PluginBase.prototype.getElements;
+            position.getElementsByClassName = position.PluginBase.prototype.getElementsByClassName;
+            position.processCommand = function (selector, command, options) {
+                var elements;
+                var i, fn, isCreate = false;
+                switch (command) {
+                    case "create":
+                        elements = new position.Position(selector, null, options);
+                        break;
+                    case "processElement":
+                        elements = position.getElements(selector);
+                        if (elements) {
+                            isCreate = !("dataPosition" in elements[0]);
+                        }
+                        if (!isCreate) {
+                            i = elements.length;
+                            while (i--) {
+                                fn = elements[i]["dataPosition"];
+                                fn(options);
+                            }
+                        } else {
+                            return position.processCommand(selector, "create", options);
+                        }
+                        break;
+                }
+                return elements;
+            };
+        })(position);
+
+        // position.js		
+		/*!   https://bitbucket.org/zoli73/tspositioning
+		 *    based on   http://api.jquery.com/position
+		 *               jquery.position() plugin
+		 */
+        var __extends = this.__extends || function (d, b) {
+            function __() { this.constructor = d; }
+            __.prototype = b.prototype;
+            d.prototype = new __();
+        };
+        var position;
+        (function (position) {
+            // required classes
+            var PositionOptions = (function () {
+                function PositionOptions() {
+                    this.of = null;
+                    this.my = "";
+                    this.at = "";
+                    this.offset = "0 0";
+                    this.collision = "flip";
+                    this.using = null;
+                }
+                return PositionOptions;
+            })();
+            var PositionBound = (function () {
+                function PositionBound() {
+                    this.top = 0;
+                    this.left = 0;
+                }
+                return PositionBound;
+            })();
+            var PositionOffset = (function () {
+                function PositionOffset() {
+                }
+                PositionOffset.prototype.getBoundFromParents = function (node) {
+                    var bound = new PositionBound();
+                    var parent = node;
+                    do {
+                        bound.top += (parent).offsetTop || 0;
+                        bound.left += (parent).offsetLeft || 0;
+                        parent = parent.parentNode;
+                    } while (parent && (parent !== document));
+                    return bound;
+                };
+                PositionOffset.prototype.getOffset = function (elem, options) {
+                    var isElemNotDefined = !elem;
+                    if (elem) {
+                        if ('ownerDocument' in elem) {
+                            isElemNotDefined = (!elem.ownerDocument);
+                        }
+                    }
+                    if (isElemNotDefined) {
+                        return null;
+                    }
+                    var bound = new PositionBound();
+                    if (options) {
+                        this.setOffset(elem, options);
+                    }
+                    var isFnInProto = position.PluginBase.prototype.isPropertyInElement(elem, 'getBoundingClientRect');
+                    if (('getBoundingClientRect' in elem) || isFnInProto) {
+                        var clientRect = elem.getBoundingClientRect();
+                        bound.top = parseInt(clientRect.top + '', 10);
+                        bound.left = parseInt(clientRect.left + '', 10);
+                    } else {
+                        bound = this.getBoundFromParents(elem);
+                    }
+                    return bound;
+                };
+                PositionOffset.prototype.setOffset = function (elem, options) {
+                    // set position first, in-case top/left are set even on static elem
+                    if (elem.style.position != 'absolute') {
+                        elem.style.position = 'absolute';
+                    }
+                    var curOffset = this.getOffset(elem);
+                    var curTop = parseInt(elem.style.top, 10) || 0;
+                    var curLeft = parseInt(elem.style.left, 10) || 0;
+                    var props = {
+                        top: (options.top - curOffset.top) + curTop,
+                        left: (options.left - curOffset.left) + curLeft
+                    };
+                    var isUsing = false;
+                    if ('using' in options) {
+                        isUsing = (typeof (options.using) == 'function');
+                    }
+                    if (isUsing) {
+                        options.using.call(elem, props);
+                    } else {
+                        elem.style.top = props.top + 'px';
+                        elem.style.left = props.left + 'px';
+                    }
+                };
+                return PositionOffset;
+            })();
+            position.PositionOffset = PositionOffset;
+            var PositionUI = (function (_super) {
+                __extends(PositionUI, _super);
+                function PositionUI() {
+                    _super.call(this);
+                    this.bgiframe = null;
+                    this.position = {
+                        fit: new PositionFit(),
+                        flip: new PositionFlip()
+                    };
+                    if (BgiFrame) {
+                        if ('Bgiframe' in BgiFrame) {
+                            this.bgiframe = new BgiFrame.Bgiframe();
+                        }
+                    }
+                }
+                return PositionUI;
+            })(PositionOffset);
+            var PositionFitNFlipBase = (function () {
+                function PositionFitNFlipBase() { }
+                PositionFitNFlipBase.prototype.getWindowDimension = function (dimensionType) {
+                    var dimension = 0;
+                    var isSuccess = false;
+                    if ('inner' + dimensionType in window) {
+                        if (typeof (window['inner' + dimensionType]) == 'number') {
+                            dimension = window['inner' + dimensionType];
+                            isSuccess = true;
+                        }
+                    }
+                    if (!isSuccess) {
+                        if ('documentElement' in document) {
+                            if (document.documentElement && document.documentElement['client' + dimensionType]) {
+                                dimension = document.documentElement['client' + dimensionType];
+                                isSuccess = true;
+                            }
+                        }
+                    }
+                    if (!isSuccess) {
+                        if ('body' in document) {
+                            if ('client' + dimensionType in document.body) {
+                                dimension = document.body['client' + dimensionType];
+                            } else if ('client' + dimensionType in document.body.parentNode) {
+                                dimension = document.body.parentNode['client' + dimensionType];
+                            }
+                        }
+                    }
+                    return dimension;
+                };
+                PositionFitNFlipBase.prototype.getWindowScrollPosition = function (coordinate) {
+                    var pos = 0;
+                    var isSucces = false;
+                    var coord;
+                    var dir;
+                    var pageFn;
+                    var scrollFn;
+                    var fn;
+                    if (coordinate.toUpperCase() == 'X') {
+                        coord = 'X';
+                        dir = 'Left';
+                    } else {
+                        coord = 'Y';
+                        dir = 'Top';
+                    }
+                    pageFn = 'page' + coord + 'Offset';
+                    scrollFn = 'scroll' + dir;
+                    fn = position.PluginBase.prototype.getObjectFn(window, pageFn);
+                    if (fn) {
+                        pos = fn();
+                        isSucces = true;
+                    }
+                    if (!isSucces) {
+                        if ('body' in document) {
+                            fn = position.PluginBase.prototype.getObjectFn(document.body, scrollFn);
+                            if (fn) {
+                                pos = fn();
+                                isSucces = true;
+                            }
+                            if (!isSucces) {
+                                fn = position.PluginBase.prototype.getObjectFn(document.body.parentNode, scrollFn);
+                                if (fn) {
+                                    pos = fn();
+                                    isSucces = true;
+                                }
+                            }
+                        }
+                    }
+                    if (!isSucces) {
+                        if ('documentElement' in document) {
+                            fn = position.PluginBase.prototype.getObjectFn(document.documentElement, scrollFn);
+                            if (fn) {
+                                pos = fn();
+                                isSucces = true;
+                            }
+                        }
+                    }
+                    return pos;
+                };
+                PositionFitNFlipBase.prototype.getWindowWidth = function () {
+                    return this.getWindowDimension('Width');
+                };
+                PositionFitNFlipBase.prototype.getWindowHeight = function () {
+                    return this.getWindowDimension('Height');
+                };
+                PositionFitNFlipBase.prototype.getWindowScrollLeft = function () {
+                    return this.getWindowScrollPosition('X');
+                };
+                PositionFitNFlipBase.prototype.getWindowScrollTop = function () {
+                    return this.getWindowScrollPosition('Y');
+                };
+                return PositionFitNFlipBase;
+            })();
+            var PositionFit = (function (_super) {
+                __extends(PositionFit, _super);
+                function PositionFit() {
+                    _super.apply(this, arguments);
+
+                }
+                PositionFit.prototype.left = function (position, data) {
+                    var over = position.left + data.elemWidth - this.getWindowWidth() - this.getWindowScrollLeft();
+                    position.left = over > 0 ? position.left - over : Math.max(0, position.left);
+                    return position;
+                };
+                PositionFit.prototype.top = function (position, data) {
+                    var over = position.top + data.elemHeight - this.getWindowHeight() - this.getWindowScrollTop();
+                    position.top = over > 0 ? position.top - over : Math.max(0, position.top);
+                    return position;
+                };
+                return PositionFit;
+            })(PositionFitNFlipBase);
+            var PositionFlip = (function (_super) {
+                __extends(PositionFlip, _super);
+                function PositionFlip() {
+                    _super.apply(this, arguments);
+
+                }
+                PositionFlip.prototype.left = function (position, data) {
+                    if (data.at[0] != 'center') {
+                        var over = position.left + data.elemWidth - this.getWindowWidth() - this.getWindowScrollLeft();
+                        var myOffset = data.my[0] == 'left' ? -data.elemWidth : data.my[0] == 'right' ? data.elemWidth : 0;
+                        var offset = -2 * data.offset[0];
+                        position.left += position.left < 0 ? myOffset + data.targetWidth + offset : over > 0 ? myOffset - data.targetWidth + offset : 0;
+                    }
+                    return position;
+                };
+                PositionFlip.prototype.top = function (position, data) {
+                    if (data.at[1] != 'center') {
+                        var over = position.top + data.elemHeight - this.getWindowHeight() - this.getWindowScrollTop();
+                        var myOffset = data.my[1] == 'top' ? -data.elemHeight : data.my[1] == 'bottom' ? data.elemHeight : 0;
+                        var atOffset = data.at[1] == 'top' ? data.targetHeight : -data.targetHeight;
+                        var offset = -2 * data.offset[1];
+                        position.top += position.top < 0 ? myOffset + data.targetHeight + offset : over > 0 ? myOffset + atOffset + offset : 0;
+                    }
+                    return position;
+                };
+                return PositionFlip;
+            })(PositionFitNFlipBase);
+            var PositionBase = (function (_super) {
+                __extends(PositionBase, _super);
+                function PositionBase(targetSelector, targetElement, options) {
+                    _super.call(this, targetSelector, targetElement, options);
+                }
+                PositionBase.prototype.initialize = function () {
+                    _super.prototype.initialize.call(this);
+                    this.horizontalPositions = /left|center|right/;
+                    this.verticalPositions = /top|center|bottom/;
+                    this.horizontalDefault = 'center';
+                    this.verticalDefault = 'center';
+                    this.ui = new PositionUI();
+                };
+                return PositionBase;
+            })(position.PluginBase);
+            position.PositionBase = PositionBase;
+            // plugin Position
+            var Position = (function (_super) {
+                __extends(Position, _super);
+                function Position(targetSelector, targetElement, options) {
+                    _super.call(this, targetSelector, targetElement, options);
+                    this.basePosition = new PositionBound();
+                    if (this.target) {
+                        this.setDefaults();
+                        this.options = new PositionOptions();
+                        this.setOptions(options);
+                        this.initialize();
+                    }
+                    return this.target;
+                }
+                Position.prototype.initialize = function () {
+                    _super.prototype.initialize.call(this);
+                    this.setPlugin();
+                    this.setPlugin();
+                };
+                Position.prototype.setDefaults = function () {
+                    if (!this.collision) {
+                        this.collision = [
+                            "flip"
+                        ];
+                    }
+                    if (!this.offset) {
+                        this.offset = [
+                            0,
+                            0
+                        ];
+                    }
+                    if (!this.targetWidth) {
+                        this.targetWidth = 0;
+                    }
+                    if (!this.targetHeight) {
+                        this.targetHeight = 0;
+                    }
+                };
+                Position.prototype.setPlugin = function (options) {
+                    if (options) {
+                        this.setOptions(options);
+                    }
+                    if (this.options.collision) {
+                        this.collision = this.options.collision.split(' ');
+                    }
+                    if (this.options.offset) {
+                        var offset = this.options.offset.split(' ');
+                        this.offset = [];
+                        for (var i = 0; i < offset.length; i++) {
+                            this.offset.push(parseInt(offset[i]));
+                        }
+                        while (this.offset.length < 2) {
+                            this.offset.push(0);
+                        }
+                    }
+                    this.setDimension();
+                    this.setPosition("my")// set options.my
+                    ;
+                    this.setPosition("at")// set options.at
+                    ;
+                    this.normalize();
+                    this.setBasePosition();
+                    var i = this.target.length;
+                    while (i--) {
+                        if (!("dataPosition" in this.target[i])) {
+                            if (i == (this.target.length - 1)) {
+                                var plugin = this;
+                                this.target[i]["dataPosition"] = function () {
+                                    plugin.setPlugin.apply(plugin, arguments);
+                                };
+                            } else {
+                                this.target[i]["dataPosition"] = function () {
+                                    return;
+                                };
+                            }
+                        }
+                        this.processElement(this.target[i]);
+                    }
+                };
+                Position.prototype.normalize = function () {
+                    // normalize collision option
+                    if (this.collision.length == 1) {
+                        this.collision[1] = this.collision[0];
+                    }
+                    // normalize offset option
+                    this.offset[0] = this.parseIntFromString(this.offset[0]);
+                    if (this.offset.length == 1) {
+                        this.offset[1] = this.offset[0];
+                    }
+                    this.offset[1] = this.parseIntFromString(this.offset[1]);
+                };
+                Position.prototype.setDimension = function () {
+                    this.basePosition = new PositionBound();
+                    var isDocument = false;
+                    var isScreenView = false;
+                    if ('nodeType' in this.options.of) {
+                        isDocument = (this.options.of.nodeType === 9);
+                    } else {
+                        isDocument = (this.options.of === document);
+                    }
+                    if ('document' in this.options.of) {
+                        isScreenView = (this.options.of.document !== null && (this.options.of.document !== undefined));
+                    }
+                    if (isDocument) {
+                        var isDocElement = this.isPropertyInObject(document, 'documentElement');
+                        if (isDocElement) {
+                            if (this.isPropertyInObject(document.documentElement, 'offsetWidth')) {
+                                this.targetWidth = document.documentElement.offsetWidth;
+                                this.targetHeight = document.documentElement.offsetHeight;
+                            } else {
+                                isDocElement = false;
+                            }
+                        }
+                        if (!isDocElement) {
+                            if (document.body && this.isPropertyInObject(document.body, 'offsetWidth')) {
+                                this.targetWidth = this.getObjectProp(document.body, 'offsetWidth') || 0;
+                                this.targetHeight = this.getObjectProp(document.body, 'offsetHeight') || 0;
+                            } else {
+                                this.targetWidth = this.getObjectProp(this.options.of, 'offsetWidth') || 0;
+                                this.targetHeight = this.getObjectProp(this.options.of, 'offsetHeight') || 0;
+                            }
+                            if (!this.targetWidth) {
+                                this.targetWidth = this.getObjectProp(document.body.parentNode, 'offsetWidth') || 0;
+                            }
+                            if (!this.targetHeight) {
+                                this.targetHeight = this.getObjectProp(document.body.parentNode, 'offsetHeight') || 0;
+                            }
+                        }
+                    } else if (("scrollTo" in this.options.of) && isScreenView) {
+                        // ScreenView
+                        this.targetWidth = this.getObjectProp(this.options.of, 'offsetWidth') || 0;
+                        this.targetHeight = this.getObjectProp(this.options.of, 'offsetHeight') || 0;
+                        this.basePosition.top = this.getObjectProp(this.options.of, 'scrollTop') || 0;
+                        this.basePosition.left = this.getObjectProp(this.options.of, 'scrollLeft') || 0;
+                    } else if ("preventDefault" in this.options.of) {
+                        // MouseEvent
+                        // force left top to allow flipping
+                        this.options.at = 'left top';
+                        this.targetWidth = 0;
+                        this.targetHeight = 0;
+                        this.basePosition.top = this.getObjectProp(this.options.of, 'pageY') || this.getObjectProp(this.options.of, 'clientY') || 0;
+                        this.basePosition.left = this.getObjectProp(this.options.of, 'pageX') || this.getObjectProp(this.options.of, 'clientX') || 0;
+                    } else {
+                        this.targetWidth = this.getObjectProp(this.options.of, 'offsetWidth') || 0;
+                        this.targetHeight = this.getObjectProp(this.options.of, 'offsetHeight') || 0;
+                        this.basePosition = this.ui.getOffset(this.options.of);
+                    }
+                    if (!(this.basePosition.left + this.basePosition.top) || !(this.targetWidth + this.targetHeight)) {
+                        if (this.isPropertyInObject(this.options.of, 'getBoundingClientRect')) {
+                            var fnRect = this.getObjectFn(this.options.of, 'getBoundingClientRect');
+                            var clientRect = fnRect();
+                            if ('left' in clientRect) {
+                                if (!(this.basePosition.left + this.basePosition.top)) {
+                                    this.basePosition.left = parseInt(clientRect.left + '', 10) || 0;
+                                    this.basePosition.top = parseInt(clientRect.top + '', 10) || 0;
+                                }
+                                if (!(this.targetWidth + this.targetHeight)) {
+                                    this.targetWidth = parseInt(clientRect.width + '', 10) || 0;
+                                    this.targetHeight = parseInt(clientRect.height + '', 10) || 0;
+                                }
+                            }
+                        }
+                    }
+                };
+                Position.prototype.setPosition = function (tag) {
+                    var pos = null;
+                    if (typeof (this.options[tag]) == "string") {
+                        pos = (this.options[tag] || '').split(' ');
+                    } else {
+                        pos = this.options[tag];
+                    }
+                    pos = pos.length == 1 ? this.horizontalPositions.test(pos[0]) ? pos.concat([
+                        this.verticalDefault
+                    ]) : this.verticalPositions.test(pos[0]) ? [
+                        this.horizontalDefault
+                    ].concat(pos) : [
+                        this.horizontalDefault,
+                        this.verticalDefault
+                    ] : pos;
+                    pos[0] = this.horizontalPositions.test(pos[0]) ? pos[0] : this.horizontalDefault;
+                    pos[1] = this.verticalPositions.test(pos[1]) ? pos[1] : this.verticalDefault;
+                    this.options[tag] = pos;
+                };
+                Position.prototype.setBasePosition = function () {
+                    switch (this.options.at[0]) {
+                        case 'right':
+                            this.basePosition.left += this.targetWidth;
+                            break;
+                        case this.horizontalDefault:
+                            this.basePosition.left += this.targetWidth / 2;
+                            break;
+                    }
+                    switch (this.options.at[1]) {
+                        case 'bottom':
+                            this.basePosition.top += this.targetHeight;
+                            break;
+                        case this.verticalDefault:
+                            this.basePosition.top += this.targetHeight / 2;
+                            break;
+                    }
+                    this.basePosition.left += this.offset[0];
+                    this.basePosition.top += this.offset[1];
+                };
+                Position.prototype.processElement = function (elem) {
+                    var elemWidth = 0;
+                    var elemHeight = 0;
+                    var position = new PositionBound();
+                    if (this.isPropertyInElement(elem, 'offsetWidth')) {
+                        elemWidth = elem.offsetWidth || 0;
+                    }
+                    if (this.isPropertyInElement(elem, 'offsetHeight')) {
+                        elemWidth = elem.offsetHeight || 0;
+                    }
+                    position.left = this.basePosition.left;
+                    position.top = this.basePosition.top;
+                    switch (this.options.my[0]) {
+                        case 'right':
+                            position.left -= elemWidth;
+                            break;
+                        case this.horizontalDefault:
+                            position.left -= elemWidth / 2;
+                            break;
+                    }
+                    switch (this.options.my[1]) {
+                        case 'bottom':
+                            position.top -= elemHeight;
+                            break;
+                        case this.verticalDefault:
+                            position.top -= elemHeight / 2;
+                            break;
+                    }
+                    // collision
+                    var dirs = [
+                        'left',
+                        'top'
+                    ];
+                    var collisionOpt = {
+                        targetWidth: this.targetWidth,
+                        targetHeight: this.targetHeight,
+                        elemWidth: elemWidth,
+                        elemHeight: elemHeight,
+                        offset: this.offset,
+                        my: this.options.my,
+                        at: this.options.at
+                    };
+                    var j = dirs.length;
+                    while (j--) {
+                        var dir = dirs[j];
+                        if (this.ui.position[this.collision[j]]) {
+                            position = this.ui.position[this.collision[j]][dir](position, collisionOpt);
+                        }
+                    }
+                    if (this.ui.bgiframe) {
+                        this.ui.bgiframe.fire(elem);
+                    }
+                    position["using"] = this.options.using;
+                    this.ui.getOffset(elem, position);
+                };
+                Position.prototype.setOptions = function (options) {
+                    _super.prototype.setOptions.call(this, options);
+                };
+                return Position;
+            })(PositionBase);
+            position.Position = Position;
+        })(position || (position = {}));
+
+    </script>
+
+    <script type="text/javascript">
+        function positioning(e) {
+            if (e) {
+                if ("cancelBubble" in e) e.cancelBubble = true;
+                if ("returnValue" in e) e.returnValue = false;
+                if ("stopPropagation" in e) e.stopPropagation();
+                if ("preventDefault" in e) e.preventDefault();
+            }
+
+            var options = {
+                of: document.getElementById("parent"),
+                my: document.getElementById("my_horizontal").value + " " + document.getElementById("my_vertical").value,
+                at: document.getElementById("at_horizontal").value + " " + document.getElementById("at_vertical").value,
+                collision: document.getElementById("collision_horizontal").value + " " + document.getElementById("collision_vertical").value
+            };
+
+            // create plugin or process if exists
+            position.processCommand(".positionable", "processElement", options);
+        }
+
+        function setPlugin() {
+
+            // opacity
+
+            var positionable = position.getElements(".positionable");
+            var i = positionable.length;
+            while (i--) {
+                positionable[i].style.opacity = "0.5";
+                positionable[i].style.filter = 'alpha(opacity=50)';
+            }
+
+            //add handlers for select and input
+
+            var controls = position.getElements("select, input");
+            var j = controls.length;
+            while (j--) {
+                var eventType = ["click", "keyup", "change"];
+                var k = eventType.length;
+                while (k--) {
+                    if (document.addEventListener) {
+                        controls[j].addEventListener(eventType[k], positioning, false);
+                    }
+                    else {
+                        controls[j].attachEvent('on' + eventType[k], positioning);
+                    }
+                }
+            }
+
+            positioning();
+        }
+    </script>
+</head>
+<body onload="setPlugin();">
+    <div class="root">
+        <div id="parent">
+            <p>
+                This is the position parent element.
+            </p>
+        </div>
+    </div>
+
+<div class="positionable" id="positionable1">
+    <p>
+        to position
+    </p>
+</div>
+<div class="positionable" id="positionable2">
+    <p>
+        to position 2
+    </p>
+</div>
+<div style="padding: 20px; margin-top: 75px;">
+    position... (<b>TypeScript Position plugin</b>)
+    <div style="padding-bottom: 20px;">
+        <b>my:</b>
+        <select id="my_horizontal">
+            <option value="left">left</option>
+            <option value="center">center</option>
+            <option value="right">right</option>
+        </select>
+        <select id="my_vertical">
+            <option value="top">top</option>
+            <option value="middle">center</option>
+            <option value="bottom">bottom</option>
+        </select>
+    </div>
+    <div style="padding-bottom: 20px;">
+        <b>at:</b>
+        <select id="at_horizontal">
+            <option value="left">left</option>
+            <option value="center">center</option>
+            <option value="right">right</option>
+        </select>
+        <select id="at_vertical">
+            <option value="top">top</option>
+            <option value="middle">center</option>
+            <option value="bottom">bottom</option>
+        </select>
+    </div>
+    <div style="padding-bottom: 20px;">
+        <b>collision:</b>
+        <select id="collision_horizontal">
+            <option value="flip">flip</option>
+            <option value="fit">fit</option>
+            <option value="flipfit">flipfit</option>
+            <option value="none">none</option>
+        </select>
+        <select id="collision_vertical">
+            <option value="flip">flip</option>
+            <option value="fit">fit</option>
+            <option value="flipfit">flipfit</option>
+            <option value="none">none</option>
+        </select>
+    </div>
+</div>
+</body>
+</html>

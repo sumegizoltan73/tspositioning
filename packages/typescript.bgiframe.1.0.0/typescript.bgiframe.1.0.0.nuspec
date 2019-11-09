@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>typescript.bgiframe</id>
+    <version>1.0.0</version>
+    <title>Bgiframe for IE6 (simple plugin version)</title>
+    <authors>Brandon Aaron, Zoltan Sumegi</authors>
+    <owners>Brandon Aaron, Zoltan Sumegi</owners>
+    <licenseUrl>https://github.com/brandonaaron/bgiframe/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/sumegizoltan/BgiFrame</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>This plugin a implementation of the original jQuery.bgiframe plugin, without jQuery function calls.
+
+jQuery.bgiframe plugin repositore url:
+https://github.com/brandonaaron/bgiframe
+
+The package licensed under Mozilla Pulic License(MPL) and MIT.
+
+Copyrights for the jQuery plugin:
+Copyright (c) 2013 Brandon Aaron (http://brandonaaron.net)
+
+Copyrights for native javascript implementations:
+Copyright (c) 2013 Zoltan Sumegi (http://sumegi.net)</description>
+    <releaseNotes />
+    <copyright>Copyright (c) 2013 Brandon Aaron (http://brandonaaron.net)</copyright>
+    <language>en-US</language>
+    <tags>javascript, typescript, IE6, bgiframe</tags>
+    <references />
+  </metadata>
+</package>

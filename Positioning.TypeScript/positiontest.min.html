@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+
+    <!--NEED TO RUN WITHOUT LINE BELOW-->
+    <!--NEED TO RUN WITHOUT LINE above-->
+
+    <style type="text/css">
+        .root {
+            position: relative;
+            top: 100px;
+            left: 100px;
+        }
+        #parent {
+            width: 60%;
+            height: 40px;
+            margin: 10px auto;
+            padding: 5px;
+            border: 1px solid #777;
+            background-color: #fbca93;
+            text-align: center;
+        }
+        .positionable {
+            position: absolute;
+            display: block;
+            right: 0;
+            bottom: 0;
+            background-color: #bcd5e6;
+            text-align: center;
+        }
+        #positionable1 {
+            width: 75px;
+            height: 75px;
+        }
+        #positionable2 {
+            width: 120px;
+            height: 40px;
+        }
+        select, input {
+            margin-left: 15px;
+        }
+    </style>
+    
+    <script type="text/javascript">
+        /*!  typescript.bgiframe https://github.com/sumegizoltan/BgiFrame
+         *      based on
+         *   https://github.com/brandonaaron/bgiframe
+         *   The jQuery plugin copyrights: Copyright (c) 2013 Brandon Aaron (http://brandonaaron.net)
+         */
+        var BgiFrame; (function (n) { var t = function () { function n() { } return n }(), i = function () { function n(n) { this.s = null, this.s = new t, this.s.top = "auto", this.s.left = "auto", this.s.width = "auto", this.s.height = "auto", this.s.opacity = !0, this.s.src = "javascript:false;", this.s.conditional = /MSIE 6.0/.test(navigator.userAgent), n && this.s.conditional && this.fire(n) } return n.prototype.createIframe = function () { var n = document.createElement("iframe"); return n.className = "bgiframe", n.setAttribute("frameborder", "0"), n.setAttribute("tabindex", "-1"), n.setAttribute("src", this.s.src), n.style.display = "block", n.style.position = "absolute", n.style.zIndex = "-1", n }, n.prototype.fire = function (n) { if (this.s.conditional) { var i = this.getIframe(n), t = i; i || (t = this.createIframe()), t.style.top = this.s.top == "auto" ? (parseInt(n.style.borderTopWidth, 10) || 0) * -1 + "px" : this.prop(this.s.top), t.style.left = this.s.left == "auto" ? (parseInt(n.style.borderLeftWidth, 10) || 0) * -1 + "px" : this.prop(this.s.left), t.style.width = this.s.width == "auto" ? n.offsetWidth + "px" : this.prop(this.s.width), t.style.height = this.s.height == "auto" ? n.offsetHeight + "px" : this.prop(this.s.height), t.style.opacity = this.s.opacity === !0 ? "0" : undefined, i || n.insertBefore(t) } }, n.prototype.getIframe = function (n) { for (var i = n.getElementsByTagName("iframe"), r = null, t = 0; t < i.length; t++) if (/bgiframe/.test(i[t].className)) { r = i[t]; break } return r }, n.prototype.prop = function (n) { return n && n.constructor === Number ? n + "px" : n }, n }(); n.Bgiframe = i })(BgiFrame || (BgiFrame = {}))
+
+        // position.common.min.js
+		/*!   https://bitbucket.org/zoli73/tspositioning
+		 *    based on   http://api.jquery.com/position
+		 *               jquery.position() plugin
+		 */
+        var position; (function (n) { var t = function () { function n(n, t) { this.options = null, this.target = null, this.setTarget(n, t) } return n.prototype.initialize = function () { }, n.prototype.parseIntFromString = function (n) { return parseInt(n, 10) || 0 }, n.prototype.getObjectProp = function (n, t) { var i = null; return n && (t in n ? i = n[t] : "prototype" in n && t in n.prototype && (i = n.prototype[t])), i }, n.prototype.getObjectFn = function (t, i) { var r = n.prototype.getObjectProp(t, i); return typeof r == "function" ? r : null }, n.prototype.isPropertyInObject = function (n, t) { var i = !1; return n && (i = t in n, !i && "prototype" in n && (i = t in n.prototype)), i }, n.prototype.isPropertyInElement = function (t, i) { var r = n.prototype.isPropertyInObject(t, i); return !r && t && (t == document ? "Document" in window ? r = n.prototype.isPropertyInObject(window.Document, i) : "HTMLDocument" in window && (r = n.prototype.isPropertyInObject(window.HTMLDocument, i)) : "HTMLElement" in window ? r = n.prototype.isPropertyInObject(window.HTMLElement, i) : "HTMLHtmlElement" in window ? r = n.prototype.isPropertyInObject(window.HTMLHtmlElement, i) : "Node" in window && (r = n.prototype.isPropertyInObject(window.Node, i))), r }, n.prototype.getElementsByClassName = function (t) { var i; if (!t) return null; var u = [], f = 0, r, e = new RegExp(t.replace(" ", "|")); if (n.prototype.isPropertyInElement(document, "all")) for (i = 0; i < document.all.length; i++) "className" in document.all[i] && (r = document.all[i], e.test(r.className) && (u.push(r), f++)); return u }, n.prototype.getElements = function (t, i) { for (var f = [], e = t.split(","), o = e.length, h, u, a, c, l, r, s = i ? i : document; o--;) if (/[#]/.test(e[o])) a = e[o].split("#")[1], h = document.getElementById(a), h && f.push(h); else if (/[\.]/.test(e[o])) { if (c = e[o].split(".")[1], l = e[o].split(".")[0].toUpperCase(), u = n.prototype.isPropertyInElement(s, "getElementsByClassName") ? s.getElementsByClassName(c) : this.getElementsByClassName(c), u) for (r = 0; r < u.length; r++) l ? l == u[r].tagName.toUpperCase() && f.push(u[r]) : f.push(u[r]) } else if (u = s.getElementsByTagName(e[o]), u) for (r = 0; r < u.length; r++) f.push(u[r]); return f.length < 1 && (f = null), f }, n.prototype.setTarget = function (n, t) { (n || t) && (t ? (this.target = [], this.target.push(t)) : this.target = this.getElements(n)) }, n.prototype.setOptions = function (n) { if (n) { this.options || (this.options = {}); for (var t in n) this.options[t] = n[t] } }, n }(); n.PluginBase = t })(position || (position = {})), function (n) { n.getElements = n.PluginBase.prototype.getElements, n.getElementsByClassName = n.PluginBase.prototype.getElementsByClassName, n.processCommand = function (t, i, r) { var u, f, e, o = !1; switch (i) { case "create": u = new n.Position(t, null, r); break; case "processElement": if (u = n.getElements(t), u && (o = !("dataPosition" in u[0])), o) return n.processCommand(t, "create", r); for (f = u.length; f--;) e = u[f].dataPosition, e(r) } return u } }(position)
+
+        // position.min.js
+		/*!   https://bitbucket.org/zoli73/tspositioning
+		 *    based on   http://api.jquery.com/position
+		 *               jquery.position() plugin
+		 */
+        var __extends = this.__extends || function (n, t) { function i() { this.constructor = n } i.prototype = t.prototype, n.prototype = new i }, position; (function (n) { var e = function () { function n() { this.of = null, this.my = "", this.at = "", this.offset = "0 0", this.collision = "flip", this.using = null } return n }(), t = function () { function n() { this.top = 0, this.left = 0 } return n }(), i = function () { function i() { } return i.prototype.getBoundFromParents = function (n) { var r = new t, i = n; do r.top += i.offsetTop || 0, r.left += i.offsetLeft || 0, i = i.parentNode; while (i && i !== document); return r }, i.prototype.getOffset = function (i, r) { var e = !i, u, o, f; return (i && "ownerDocument" in i && (e = !i.ownerDocument), e) ? null : (u = new t, r && this.setOffset(i, r), o = n.PluginBase.prototype.isPropertyInElement(i, "getBoundingClientRect"), "getBoundingClientRect" in i || o ? (f = i.getBoundingClientRect(), u.top = parseInt(f.top + "", 10), u.left = parseInt(f.left + "", 10)) : u = this.getBoundFromParents(i), u) }, i.prototype.setOffset = function (n, t) { n.style.position != "absolute" && (n.style.position = "absolute"); var r = this.getOffset(n), f = parseInt(n.style.top, 10) || 0, e = parseInt(n.style.left, 10) || 0, i = { top: t.top - r.top + f, left: t.left - r.left + e }, u = !1; "using" in t && (u = typeof t.using == "function"), u ? t.using.call(n, i) : (n.style.top = i.top + "px", n.style.left = i.left + "px") }, i }(), f; n.PositionOffset = i; var o = function (n) { function t() { n.call(this), this.bgiframe = null, this.position = { fit: new s, flip: new h }, BgiFrame && "Bgiframe" in BgiFrame && (this.bgiframe = new BgiFrame.Bgiframe) } return __extends(t, n), t }(i), r = function () { function t() { } return t.prototype.getWindowDimension = function (n) { var t = 0, i = !1; return "inner" + n in window && typeof window["inner" + n] == "number" && (t = window["inner" + n], i = !0), i || "documentElement" in document && document.documentElement && document.documentElement["client" + n] && (t = document.documentElement["client" + n], i = !0), i || "body" in document && ("client" + n in document.body ? t = document.body["client" + n] : "client" + n in document.body.parentNode && (t = document.body.parentNode["client" + n])), t }, t.prototype.getWindowScrollPosition = function (t) { var u = 0, r = !1, e, o, s, f, i; return t.toUpperCase() == "X" ? (e = "X", o = "Left") : (e = "Y", o = "Top"), s = "page" + e + "Offset", f = "scroll" + o, i = n.PluginBase.prototype.getObjectFn(window, s), i && (u = i(), r = !0), r || "body" in document && (i = n.PluginBase.prototype.getObjectFn(document.body, f), i && (u = i(), r = !0), r || (i = n.PluginBase.prototype.getObjectFn(document.body.parentNode, f), i && (u = i(), r = !0))), r || "documentElement" in document && (i = n.PluginBase.prototype.getObjectFn(document.documentElement, f), i && (u = i(), r = !0)), u }, t.prototype.getWindowWidth = function () { return this.getWindowDimension("Width") }, t.prototype.getWindowHeight = function () { return this.getWindowDimension("Height") }, t.prototype.getWindowScrollLeft = function () { return this.getWindowScrollPosition("X") }, t.prototype.getWindowScrollTop = function () { return this.getWindowScrollPosition("Y") }, t }(), s = function (n) { function t() { n.apply(this, arguments) } return __extends(t, n), t.prototype.left = function (n, t) { var i = n.left + t.elemWidth - this.getWindowWidth() - this.getWindowScrollLeft(); return n.left = i > 0 ? n.left - i : Math.max(0, n.left), n }, t.prototype.top = function (n, t) { var i = n.top + t.elemHeight - this.getWindowHeight() - this.getWindowScrollTop(); return n.top = i > 0 ? n.top - i : Math.max(0, n.top), n }, t }(r), h = function (n) { function t() { n.apply(this, arguments) } return __extends(t, n), t.prototype.left = function (n, t) { if (t.at[0] != "center") { var u = n.left + t.elemWidth - this.getWindowWidth() - this.getWindowScrollLeft(), i = t.my[0] == "left" ? -t.elemWidth : t.my[0] == "right" ? t.elemWidth : 0, r = -2 * t.offset[0]; n.left += n.left < 0 ? i + t.targetWidth + r : u > 0 ? i - t.targetWidth + r : 0 } return n }, t.prototype.top = function (n, t) { if (t.at[1] != "center") { var u = n.top + t.elemHeight - this.getWindowHeight() - this.getWindowScrollTop(), i = t.my[1] == "top" ? -t.elemHeight : t.my[1] == "bottom" ? t.elemHeight : 0, f = t.at[1] == "top" ? t.targetHeight : -t.targetHeight, r = -2 * t.offset[1]; n.top += n.top < 0 ? i + t.targetHeight + r : u > 0 ? i + f + r : 0 } return n }, t }(r), u = function (n) { function t(t, i, r) { n.call(this, t, i, r) } return __extends(t, n), t.prototype.initialize = function () { n.prototype.initialize.call(this), this.horizontalPositions = /left|center|right/, this.verticalPositions = /top|center|bottom/, this.horizontalDefault = "center", this.verticalDefault = "center", this.ui = new o }, t }(n.PluginBase); n.PositionBase = u, f = function (n) { function i(i, r, u) { return n.call(this, i, r, u), this.basePosition = new t, this.target && (this.setDefaults(), this.options = new e, this.setOptions(u), this.initialize()), this.target } return __extends(i, n), i.prototype.initialize = function () { n.prototype.initialize.call(this), this.setPlugin(), this.setPlugin() }, i.prototype.setDefaults = function () { this.collision || (this.collision = ["flip"]), this.offset || (this.offset = [0, 0]), this.targetWidth || (this.targetWidth = 0), this.targetHeight || (this.targetHeight = 0) }, i.prototype.setPlugin = function (n) { var i, t, r; if (n && this.setOptions(n), this.options.collision && (this.collision = this.options.collision.split(" ")), this.options.offset) { for (i = this.options.offset.split(" "), this.offset = [], t = 0; t < i.length; t++) this.offset.push(parseInt(i[t])); while (this.offset.length < 2) this.offset.push(0) } for (this.setDimension(), this.setPosition("my"), this.setPosition("at"), this.normalize(), this.setBasePosition(), t = this.target.length; t--;) "dataPosition" in this.target[t] || (t == this.target.length - 1 ? (r = this, this.target[t].dataPosition = function () { r.setPlugin.apply(r, arguments) }) : this.target[t].dataPosition = function () { return }), this.processElement(this.target[t]) }, i.prototype.normalize = function () { this.collision.length == 1 && (this.collision[1] = this.collision[0]), this.offset[0] = this.parseIntFromString(this.offset[0]), this.offset.length == 1 && (this.offset[1] = this.offset[0]), this.offset[1] = this.parseIntFromString(this.offset[1]) }, i.prototype.setDimension = function () { var r, u, i, f, n; this.basePosition = new t, r = !1, u = !1, r = "nodeType" in this.options.of ? this.options.of.nodeType === 9 : this.options.of === document, "document" in this.options.of && (u = this.options.of.document !== null && this.options.of.document !== undefined), r ? (i = this.isPropertyInObject(document, "documentElement"), i && (this.isPropertyInObject(document.documentElement, "offsetWidth") ? (this.targetWidth = document.documentElement.offsetWidth, this.targetHeight = document.documentElement.offsetHeight) : i = !1), i || (document.body && this.isPropertyInObject(document.body, "offsetWidth") ? (this.targetWidth = this.getObjectProp(document.body, "offsetWidth") || 0, this.targetHeight = this.getObjectProp(document.body, "offsetHeight") || 0) : (this.targetWidth = this.getObjectProp(this.options.of, "offsetWidth") || 0, this.targetHeight = this.getObjectProp(this.options.of, "offsetHeight") || 0), this.targetWidth || (this.targetWidth = this.getObjectProp(document.body.parentNode, "offsetWidth") || 0), this.targetHeight || (this.targetHeight = this.getObjectProp(document.body.parentNode, "offsetHeight") || 0))) : "scrollTo" in this.options.of && u ? (this.targetWidth = this.getObjectProp(this.options.of, "offsetWidth") || 0, this.targetHeight = this.getObjectProp(this.options.of, "offsetHeight") || 0, this.basePosition.top = this.getObjectProp(this.options.of, "scrollTop") || 0, this.basePosition.left = this.getObjectProp(this.options.of, "scrollLeft") || 0) : "preventDefault" in this.options.of ? (this.options.at = "left top", this.targetWidth = 0, this.targetHeight = 0, this.basePosition.top = this.getObjectProp(this.options.of, "pageY") || this.getObjectProp(this.options.of, "clientY") || 0, this.basePosition.left = this.getObjectProp(this.options.of, "pageX") || this.getObjectProp(this.options.of, "clientX") || 0) : (this.targetWidth = this.getObjectProp(this.options.of, "offsetWidth") || 0, this.targetHeight = this.getObjectProp(this.options.of, "offsetHeight") || 0, this.basePosition = this.ui.getOffset(this.options.of)), this.basePosition.left + this.basePosition.top && this.targetWidth + this.targetHeight || this.isPropertyInObject(this.options.of, "getBoundingClientRect") && (f = this.getObjectFn(this.options.of, "getBoundingClientRect"), n = f(), "left" in n && (this.basePosition.left + this.basePosition.top || (this.basePosition.left = parseInt(n.left + "", 10) || 0, this.basePosition.top = parseInt(n.top + "", 10) || 0), this.targetWidth + this.targetHeight || (this.targetWidth = parseInt(n.width + "", 10) || 0, this.targetHeight = parseInt(n.height + "", 10) || 0))) }, i.prototype.setPosition = function (n) { var t = null; t = typeof this.options[n] == "string" ? (this.options[n] || "").split(" ") : this.options[n], t = t.length == 1 ? this.horizontalPositions.test(t[0]) ? t.concat([this.verticalDefault]) : this.verticalPositions.test(t[0]) ? [this.horizontalDefault].concat(t) : [this.horizontalDefault, this.verticalDefault] : t, t[0] = this.horizontalPositions.test(t[0]) ? t[0] : this.horizontalDefault, t[1] = this.verticalPositions.test(t[1]) ? t[1] : this.verticalDefault, this.options[n] = t }, i.prototype.setBasePosition = function () { switch (this.options.at[0]) { case "right": this.basePosition.left += this.targetWidth; break; case this.horizontalDefault: this.basePosition.left += this.targetWidth / 2 } switch (this.options.at[1]) { case "bottom": this.basePosition.top += this.targetHeight; break; case this.verticalDefault: this.basePosition.top += this.targetHeight / 2 } this.basePosition.left += this.offset[0], this.basePosition.top += this.offset[1] }, i.prototype.processElement = function (n) { var r = 0, f = 0, i = new t, o; this.isPropertyInElement(n, "offsetWidth") && (r = n.offsetWidth || 0), this.isPropertyInElement(n, "offsetHeight") && (r = n.offsetHeight || 0), i.left = this.basePosition.left, i.top = this.basePosition.top; switch (this.options.my[0]) { case "right": i.left -= r; break; case this.horizontalDefault: i.left -= r / 2 } switch (this.options.my[1]) { case "bottom": i.top -= f; break; case this.verticalDefault: i.top -= f / 2 } for (var e = ["left", "top"], s = { targetWidth: this.targetWidth, targetHeight: this.targetHeight, elemWidth: r, elemHeight: f, offset: this.offset, my: this.options.my, at: this.options.at }, u = e.length; u--;) o = e[u], this.ui.position[this.collision[u]] && (i = this.ui.position[this.collision[u]][o](i, s)); this.ui.bgiframe && this.ui.bgiframe.fire(n), i.using = this.options.using, this.ui.getOffset(n, i) }, i.prototype.setOptions = function (t) { n.prototype.setOptions.call(this, t) }, i }(u), n.Position = f })(position || (position = {}))
+
+    </script>
+
+    <script type="text/javascript">
+        function positioning(e) {
+            if (e) {
+                if ("cancelBubble" in e) e.cancelBubble = true;
+                if ("returnValue" in e) e.returnValue = false;
+                if ("stopPropagation" in e) e.stopPropagation();
+                if ("preventDefault" in e) e.preventDefault();
+            }
+
+            var options = {
+                of: document.getElementById("parent"),
+                my: document.getElementById("my_horizontal").value + " " + document.getElementById("my_vertical").value,
+                at: document.getElementById("at_horizontal").value + " " + document.getElementById("at_vertical").value,
+                collision: document.getElementById("collision_horizontal").value + " " + document.getElementById("collision_vertical").value
+            };
+
+            // create plugin or process if exists
+            position.processCommand(".positionable", "processElement", options);
+        }
+
+        function setPlugin() {
+
+            // opacity
+
+            var positionable = position.getElements(".positionable");
+            var i = positionable.length;
+            while (i--) {
+                positionable[i].style.opacity = "0.5";
+                positionable[i].style.filter = 'alpha(opacity=50)';
+            }
+
+            //add handlers for select and input
+
+            var controls = position.getElements("select, input");
+            var j = controls.length;
+            while (j--) {
+                var eventType = ["click", "keyup", "change"];
+                var k = eventType.length;
+                while (k--) {
+                    if (document.addEventListener) {
+                        controls[j].addEventListener(eventType[k], positioning, false);
+                    }
+                    else {
+                        controls[j].attachEvent('on' + eventType[k], positioning);
+                    }
+                }
+            }
+
+            positioning();
+        }
+    </script>
+</head>
+<body onload="setPlugin();">
+    <div class="root">
+        <div id="parent">
+            <p>
+                This is the position parent element.
+            </p>
+        </div>
+    </div>
+
+<div class="positionable" id="positionable1">
+    <p>
+        to position
+    </p>
+</div>
+<div class="positionable" id="positionable2">
+    <p>
+        to position 2
+    </p>
+</div>
+<div style="padding: 20px; margin-top: 75px;">
+    position... (<b>TypeScript Position plugin</b>)
+    <div style="padding-bottom: 20px;">
+        <b>my:</b>
+        <select id="my_horizontal">
+            <option value="left">left</option>
+            <option value="center">center</option>
+            <option value="right">right</option>
+        </select>
+        <select id="my_vertical">
+            <option value="top">top</option>
+            <option value="middle">center</option>
+            <option value="bottom">bottom</option>
+        </select>
+    </div>
+    <div style="padding-bottom: 20px;">
+        <b>at:</b>
+        <select id="at_horizontal">
+            <option value="left">left</option>
+            <option value="center">center</option>
+            <option value="right">right</option>
+        </select>
+        <select id="at_vertical">
+            <option value="top">top</option>
+            <option value="middle">center</option>
+            <option value="bottom">bottom</option>
+        </select>
+    </div>
+    <div style="padding-bottom: 20px;">
+        <b>collision:</b>
+        <select id="collision_horizontal">
+            <option value="flip">flip</option>
+            <option value="fit">fit</option>
+            <option value="flipfit">flipfit</option>
+            <option value="none">none</option>
+        </select>
+        <select id="collision_vertical">
+            <option value="flip">flip</option>
+            <option value="fit">fit</option>
+            <option value="flipfit">flipfit</option>
+            <option value="none">none</option>
+        </select>
+    </div>
+</div>
+</body>
+</html>
