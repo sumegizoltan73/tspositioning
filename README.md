@@ -1,2 +1,2 @@
 # tspositioning
-TypeScript application for jQuery.positioning
+TypeScript application for jQuery.position
